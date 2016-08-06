@@ -19,14 +19,26 @@ export function setEntries(state, entries) {
 }
 
 export function next(state) {
+  //Get the current value of entries & add the winner of the previous vote to the back of the list of entries
   const entries = state.get('entries')
                        .concat(getWinners(state.get('vote')));
 
+  //If only one entry left, we have an overall winner.
   if (entries.size === 1) {
+    /*NOTE: Instead of just returning Map({winner: entries.first()}), take
+    * OLD state as starting point & explicitly remove keys no longer required ->
+    * future proofing (at some future point we may have unrelated data in the state
+    * and it should pass through the function unchanged)
+    *-------------------------------------------
+    * PRO TIP re: STATE TRANSFORMATION FUNCTIONS:
+    *-------------------------------------------
+    * - always MORPH the old state into the new one 
+    * - rather than build new state completely from scratch */
     return state.remove('vote')
                 .remove('entries')
                 .set('winner', entries.first());
-  } else {                     
+  } else {  
+    //else return the new state tree with the next pair of entries to be voted on                   
     return state.merge({
       vote: Map({pair: entries.take(2)}),
       entries: entries.skip(2)
