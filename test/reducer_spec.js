@@ -20,7 +20,7 @@ describe('reducer', () => {
 
     //'fromJS()'' deeply converts JS arrays & objects to immutable Lists & Maps
     expect(nextState).to.equal(fromJS({
-      entries: ['Trainspotting', '28 Days Later']
+      entries: ['Trainspotting']
     }));
   });
 
