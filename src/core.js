@@ -12,3 +12,17 @@ export function next(state) {
     entries: entries.skip(2)
   });
 }
+
+export function vote(state, entry) {
+  /*Immutable.js Map method '.updateIn()':
+  - takes an array representing the key path on the object
+  - apply the specified function at that point
+  - if any keys are missing along the path, create new Maps in their place
+  - If the value at the end is missing, initialize it with '0'
+  */
+  return state.updateIn(
+    ['vote', 'tally', entry],
+    0,
+    tally => tally + 1
+  );
+}
